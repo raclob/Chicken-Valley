@@ -20,7 +20,9 @@ Upgrade prices increase with each level. A basic raider takes 9 seconds each way
 
 ## Android APK
 
-The **Android prototype** workflow in [Actions](../../actions) tests the game and exports an APK on pushes to `main`, or when run manually. Once a run succeeds, open it and download the **chicken-valley-android** artifact. Unzip it, transfer `chicken-valley.apk` to your Android device, and install it. Android may ask you to allow installation from that download source.
+**[Download Chicken Valley APK](https://github.com/raclob/Chicken-Valley/releases/latest/download/chicken-valley.apk)** directly on your Android phone. No GitHub sign-in or ZIP extraction is required. Open the downloaded `chicken-valley.apk` and install it. Android may ask you to allow installation from your browser. If the direct link does not open, visit the [latest release](https://github.com/raclob/Chicken-Valley/releases/latest) and tap `chicken-valley.apk` under **Assets**.
+
+The **Android prototype** workflow in [Actions](https://github.com/raclob/Chicken-Valley/actions) tests the game, verifies the APK signature, and publishes a release on pushes to `main`, or when run manually. It also retains the ZIP artifact as a backup download.
 
 The export targets ARM64 phones and x86_64 emulators using Godot's compatibility renderer. It is a debug-signed prototype. Builds within this repository use a persisted CI debug key, so later APKs can update the earlier installation. Online multiplayer is not included.
 
