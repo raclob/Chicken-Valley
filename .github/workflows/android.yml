@@ -37,6 +37,19 @@ jobs:
         run: |
           godot --headless --path . --quit-after 120 2>&1 | tee scene-check.log
           if grep -Eq 'SCRIPT ERROR|Parse Error|Failed to load script' scene-check.log; then exit 1; fi
+      - name: Test third-person movement and controls
+        run: godot --headless --path . --script third_person_tests.gd
+      - name: Render third-person preview
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: xvfb-run -a godot --path . --rendering-method gl_compatibility --audio-driver Dummy -- --preview
+      - name: Upload third-person preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: third-person-preview
+          path: builds/third-person-preview.png
+          if-no-files-found: error
+          retention-days: 30
       - name: Restore prototype signing key
         uses: actions/cache@v4
         with:
@@ -81,4 +94,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "prototype-${GITHUB_RUN_NUMBER}" builds/chicken-valley.apk --target "${GITHUB_SHA}" --title "Chicken Valley Android prototype ${GITHUB_RUN_NUMBER}" --notes "Offline 3D farm rivalry against an AI opponent. Download chicken-valley.apk below and install on Android. Debug-signed prototype; real-device testing is still pending."
+          gh release create "prototype-${GITHUB_RUN_NUMBER}" builds/chicken-valley.apk --target "${GITHUB_SHA}" --title "Chicken Valley Android prototype ${GITHUB_RUN_NUMBER}" --notes "Chicken Valley v0.2: controllable third-person farmer, perspective follow camera, left thumbstick movement, right-side camera drag, and collapsible farm controls. Offline match against an AI rival. Download chicken-valley.apk below and install on Android. Debug-signed prototype; real-device testing is still pending."

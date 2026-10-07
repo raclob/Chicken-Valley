@@ -4,7 +4,7 @@ A 3D real-time farm economy game: grow your flock, build coops, defend your farm
 
 ## Play
 
-Open `project.godot` in **Godot 4.6.3** and press **F6** or **F5**. Tap **Start match vs AI**. The game uses a landscape view and large touch buttons; desktop mouse controls work too.
+Open `project.godot` in **Godot 4.6.3** and press **F6** or **F5**. Tap **Start match vs AI**. The game now uses a **third-person perspective camera behind a controllable farmer**, in landscape orientation. Walk with the left thumbstick and drag on the right side to rotate and tilt the camera. **Center view** resets the camera behind the farmer. Open **Farm & raids** to buy upgrades or launch a raider; close it to resume walking. On desktop, use WASD or the arrow keys to walk and hold the right mouse button to look. Barns, coops, and fences have physical collisions; upgraded fences have an opening in the middle.
 
 Both farms start with 8 chickens and 70 coins. Each chicken earns 0.65 coins per second. Buy chickens, build coops for more capacity, upgrade fences to stop theft, and buy raider boots to improve raid strength and speed. Raiders cross the field, steal chickens, and bring them home. The farm with the most chickens after four minutes wins. Pause and restart are available.
 
@@ -30,6 +30,6 @@ To export locally, install the Godot 4.6.3 export templates, Android SDK (platfo
 
 ## Verification
 
-Run `godot --headless --path . --script tests.gd` to check income, purchases, capacity, raid cooldown, theft timing, defenses, delivery, final scoring, and a full AI match. Run `godot --headless --path . --quit-after 120` for a scene startup smoke check.
+Run `godot --headless --path . --script tests.gd` to check income, purchases, capacity, raid cooldown, theft timing, defenses, delivery, final scoring, and a full AI match. Run `godot --headless --path . --script third_person_tests.gd` to check the third-person controller and input. Run `godot --headless --path . --quit-after 120` for a scene startup smoke check.
 
-The gameplay tests and headless scene startup passed in the development workspace. Real-device rendering, touch input, and APK installation still need testing. Graphics are procedural placeholders. Buildings occupy fixed plots; custom placement, direct farmer movement, sound, and online matchmaking are future work.
+The gameplay tests, third-person integration tests, and headless scene startup passed in the development workspace. The new controller checks cover walking, camera-relative direction, barn collisions, camera pitch limits, pause, and touch release. GitHub Actions also renders a screenshot under the **third-person-preview** artifact before exporting the Android APK. Real-device rendering, touch input, and APK installation still need testing. Graphics are procedural placeholders. Buildings occupy fixed plots; custom placement, sound, and online matchmaking are future work. The player farmer can roam both farms; chicken theft is still performed by the raiders launched from **Farm & raids**.
