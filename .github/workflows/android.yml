@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   android:
@@ -74,3 +74,11 @@ jobs:
           path: builds/chicken-valley.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Verify Android APK signature
+        run: '"$ANDROID_HOME/build-tools/35.0.1/apksigner" verify --verbose builds/chicken-valley.apk'
+      - name: Publish direct APK download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "prototype-${GITHUB_RUN_NUMBER}" builds/chicken-valley.apk --target "${GITHUB_SHA}" --title "Chicken Valley Android prototype ${GITHUB_RUN_NUMBER}" --notes "Offline 3D farm rivalry against an AI opponent. Download chicken-valley.apk below and install on Android. Debug-signed prototype; real-device testing is still pending."
