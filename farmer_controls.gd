@@ -22,6 +22,8 @@ func clear_input() -> void:
 	joystick_finger = -1
 	look_finger = -1
 	mouse_look = false
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	queue_redraw()
 
 func set_enabled(value: bool) -> void:
@@ -50,6 +52,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.index == look_finger: look_changed.emit(event.relative)
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		mouse_look = event.pressed
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if mouse_look else Input.MOUSE_MODE_VISIBLE
 	elif event is InputEventMouseMotion and mouse_look:
 		look_changed.emit(event.relative)
 
@@ -70,9 +73,10 @@ func _input(event: InputEvent) -> void:
 		queue_redraw()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and not event.pressed:
 		mouse_look = false
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _draw() -> void:
-	if not enabled: return
+	if not enabled or not DisplayServer.is_touchscreen_available(): return
 	var origin := center()
 	draw_circle(origin, RADIUS + 9, Color(0.07, 0.17, 0.18, 0.4))
 	draw_arc(origin, RADIUS, 0, TAU, 48, Color(1, 0.96, 0.85, 0.6), 2, true)

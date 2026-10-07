@@ -1,0 +1,89 @@
+name: Windows PC prototype
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.6.3
+          use-dotnet: false
+          include-templates: true
+      - name: Import project
+        run: godot --headless --editor --path . --import --quit
+      - name: Test farm economy and third-person controller
+        run: |
+          godot --headless --path . --script tests.gd
+          godot --headless --path . --script third_person_tests.gd
+      - name: Render third-person preview
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: xvfb-run -a godot --path . --rendering-method gl_compatibility --audio-driver Dummy -- --preview
+      - name: Export Windows executable
+        run: |
+          mkdir -p builds/windows
+          godot --headless --path . --export-release Windows builds/windows/ChickenValley.exe
+          cp PLAY.txt builds/windows/PLAY.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chicken-valley-windows
+          path: builds/windows/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: third-person-preview
+          path: builds/third-person-preview.png
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-check:
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: chicken-valley-windows
+      - name: Launch packaged game on Windows
+        shell: pwsh
+        run: |
+          $gameProcess = Start-Process -FilePath "$PWD/ChickenValley.exe" -ArgumentList '--headless', '--quit-after', '120', '--log-file', "$PWD/windows-smoke.log" -Wait -PassThru
+          if ($gameProcess.ExitCode -ne 0) { throw "Windows game exited with code $($gameProcess.ExitCode)" }
+          if (!(Test-Path windows-smoke.log)) { throw 'Game did not produce its startup log' }
+          Get-Content windows-smoke.log
+          if (Select-String -Path windows-smoke.log -Pattern 'SCRIPT ERROR|Parse Error|Failed to load script') { throw 'Packaged game reported a script error' }
+
+  publish:
+    needs: [build, windows-check]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: chicken-valley-windows
+          path: Chicken-Valley
+      - uses: actions/download-artifact@v4
+        with:
+          name: third-person-preview
+          path: preview
+      - name: Package portable game
+        run: zip -r Chicken-Valley-Windows.zip Chicken-Valley
+      - name: Publish Windows download
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release create "windows-v0.2-${GITHUB_RUN_NUMBER}" Chicken-Valley-Windows.zip preview/third-person-preview.png --target "${GITHUB_SHA}" --latest --title "Chicken Valley v0.2 - Windows PC" --notes "Download Chicken-Valley-Windows.zip, extract it, and run ChickenValley.exe. WASD or arrows to walk; hold right mouse to look; Esc to pause; Farm & raids to build and send chicken-stealing raiders. Offline AI opponent. Gameplay, controller, rendered preview, and packaged Windows startup checks pass. Interactive Windows hardware testing is still pending."

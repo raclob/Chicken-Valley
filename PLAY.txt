@@ -1,0 +1,22 @@
+CHICKEN VALLEY v0.2 - WINDOWS PC PROTOTYPE
+
+Extract the entire ZIP before starting.
+Open ChickenValley.exe and click Start match vs AI.
+No Godot installation is required.
+
+WASD / arrow keys - move your farmer
+Hold right mouse button - rotate and tilt the camera
+Release right mouse - use the menus
+Center view - place the camera behind your farmer
+Farm & raids - show purchases, upgrades and raid actions
+Esc / Pause - pause or resume
+
+Chickens earn coins over time. Buy chickens and coops to expand.
+Build fences to stop enemy raids. Boots improve your raiders.
+Launch Raid sends a raider to steal enemy chickens and return them.
+Most chickens after four minutes wins. Play again restarts the match.
+
+This version is offline against AI. The player farmer explores the farms;
+chicken theft is performed by raiders launched from the actions panel.
+
+Source: https://github.com/raclob/Chicken-Valley

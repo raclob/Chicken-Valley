@@ -95,12 +95,12 @@ func build_world() -> void:
 	e.fog_density = 0.003
 	e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	e.ambient_light_color = Color("fff0d5")
-	e.ambient_light_energy = 0.65
+	e.ambient_light_energy = 0.3
 	env.environment = e
 	add_child(env)
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-55, -25, 0)
-	sun.light_energy = 1.2
+	sun.light_energy = 0.75
 	sun.shadow_enabled = true
 	add_child(sun)
 	box(self, Vector3(0, -0.5, 0), Vector3(180, 0.1, 180), Color("719b53"))
@@ -113,6 +113,13 @@ func build_world() -> void:
 		add_child(barn)
 		barn.position = Vector3(x, 0, -6)
 		box(barn, Vector3(0, 1.4, 0), Vector3(4.5, 2.8, 3.2), Color("287a91") if side == 0 else Color("d26b50"), true)
+		var gable := MeshInstance3D.new()
+		var prism := PrismMesh.new()
+		prism.size = Vector3(4.5, 0.9, 3.2)
+		gable.mesh = prism
+		gable.material_override = material(Color("287a91") if side == 0 else Color("d26b50"))
+		gable.position.y = 3.25
+		barn.add_child(gable)
 		for roof_side in [-1, 1]:
 			var roof := box(barn, Vector3(roof_side * 1.15, 3.17, 0), Vector3(2.65, 0.25, 3.8), Color("40494f"))
 			roof.rotation_degrees.z = -roof_side * 25
@@ -331,10 +338,10 @@ func build_ui() -> void:
 	notice_label.add_theme_color_override("font_shadow_color", Color("203c3c"))
 	notice_label.add_theme_constant_override("shadow_offset_x", 2)
 	notice_label.add_theme_constant_override("shadow_offset_y", 2)
-	var hint := label("Drag right side to look\nWASD + right mouse on desktop", 17)
+	var hint := label("WASD / arrows: walk • Hold right mouse: look\nEsc: pause • Farm & raids: build and steal", 17)
 	root.add_child(hint)
 	hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	hint.offset_left = -345
+	hint.offset_left = -500
 	hint.offset_top = -82
 	hint.offset_right = -25
 	hint.offset_bottom = -25
@@ -363,8 +370,8 @@ func build_ui() -> void:
 	intro_col.add_theme_constant_override("separation", 14)
 	intro.add_child(intro_col)
 	intro_col.add_child(label("CHICKEN VALLEY", 36))
-	intro_col.add_child(label("Third-person farm rivalry • v0.2", 22))
-	intro_col.add_child(label("Left thumbstick: walk your farmer.\nDrag right side: turn the camera.\nFarm & raids: buy chickens, coops and defenses.\nLaunch raiders to steal chickens from your rival.\nMost chickens after 4 minutes wins.", 20))
+	intro_col.add_child(label("Third-person PC farm rivalry • v0.2", 22))
+	intro_col.add_child(label("WASD or arrow keys: walk your farmer.\nHold right mouse: rotate and tilt the camera.\nFarm & raids: buy chickens, coops and defenses.\nLaunch raiders to steal chickens from your rival.\nMost chickens after 4 minutes wins. Esc pauses.", 20))
 	var start := Button.new()
 	start.text = "Start match vs AI"
 	start.custom_minimum_size = Vector2(0, 60)
@@ -491,7 +498,15 @@ func _process(delta: float) -> void:
 			get_tree().quit()
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_APPLICATION_PAUSED:
+	if what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		paused = true
 		if is_instance_valid(controls): controls.clear_input()
 		if is_instance_valid(pause_button): pause_button.text = "Resume"
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+		if intro.visible or game.finished: return
+		paused = not paused
+		controls.clear_input()
+		pause_button.text = "Resume" if paused else "Pause"
+		update_ui()
