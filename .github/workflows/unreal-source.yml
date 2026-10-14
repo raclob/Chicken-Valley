@@ -1,0 +1,31 @@
+name: Unreal migration source checks
+
+on:
+  push:
+    branches: [main]
+    paths: ['Unreal/**', '.github/workflows/unreal-source.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portable-gameplay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile portable economy
+        run: g++ -std=c++17 -Wall -Wextra -Werror -pedantic Unreal/Tests/FarmEconomyTests.cpp -o /tmp/farm-tests
+      - name: Run portable economy checks
+        run: /tmp/farm-tests
+      - name: Check project descriptor and bootstrap syntax
+        run: |
+          python3 -m json.tool Unreal/ChickenValley.uproject > /dev/null
+          python3 -m py_compile Unreal/Tools/Bootstrap.py
+      - name: Package Unreal source project
+        run: zip -r Chicken-Valley-Unreal-Source.zip Unreal -x '*/__pycache__/*'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chicken-valley-unreal-source
+          path: Chicken-Valley-Unreal-Source.zip
+          if-no-files-found: error

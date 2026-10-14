@@ -8,3 +8,13 @@ export_templates/
 feature_profiles/
 script_templates/
 text_editor_themes/
+
+# Unreal-generated build and editor data
+Unreal/Binaries/
+Unreal/Intermediate/
+Unreal/Saved/
+Unreal/DerivedDataCache/
+Unreal/Builds/
+Unreal/.vs/
+Unreal/*.sln
+Unreal/**/__pycache__/

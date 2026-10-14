@@ -1,0 +1,8 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.6",
+  "Category": "Games",
+  "Description": "Third-person farm rivalry for Windows",
+  "Modules": [{"Name": "ChickenValley", "Type": "Runtime", "LoadingPhase": "Default"}],
+  "Plugins": [{"Name": "PythonScriptPlugin", "Enabled": true}, {"Name": "EditorScriptingUtilities", "Enabled": true}]
+}

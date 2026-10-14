@@ -1,10 +1,24 @@
-# Chicken Valley — Windows PC
+# Chicken Valley — Unreal Engine migration
+
+New development targets **Unreal Engine 5.6 on Windows**. The [Unreal project and setup guide](Unreal/README.md) are in `Unreal/`.
+
+The migration source includes the third-person farmer, farm economy, coops, fences, an AI rival, and direct chicken stealing: walk into the rival field, press E, and carry the birds home.
+
+**Status:** portable C++ gameplay tests pass. Unreal compilation, editor asset generation, interactive play, and Windows packaging have not been verified because Unreal is not installed in the development environment. There is no packaged Unreal executable yet.
+
+Start by [installing Unreal Engine through Epic](https://www.unrealengine.com/en-US/download) and Visual Studio 2022's **Game development with C++** workload, then follow the [Windows setup instructions](Unreal/README.md). Download the source using **Code → Download ZIP**; extract it and open `Unreal/ChickenValley.uproject`.
+
+The existing Windows release below remains the earlier **Godot** prototype.
+
+---
+
+## Previous Godot Windows prototype
 
 A third-person 3D farm rivalry game. Walk your farmer around two competing farms, grow your chicken economy, build coops and defenses, and send raiders to steal chickens. This prototype is offline 1v1 against an AI opponent.
 
 ## Download and play
 
-**[Download the Windows game ZIP](https://github.com/raclob/Chicken-Valley/releases/latest/download/Chicken-Valley-Windows.zip)**. No GitHub sign-in is required.
+**[Download the Windows game ZIP](https://github.com/raclob/Chicken-Valley/releases/download/windows-v0.2-1/Chicken-Valley-Windows.zip)**. No GitHub sign-in is required.
 
 1. Download and extract the entire ZIP.
 2. Open the extracted **Chicken-Valley** folder.
@@ -44,7 +58,7 @@ The controllable farmer explores the world. Chicken theft is performed by the ra
 
 ## Preview
 
-![Third-person farmer view](https://github.com/raclob/Chicken-Valley/releases/latest/download/third-person-preview.png)
+![Third-person farmer view](https://github.com/raclob/Chicken-Valley/releases/download/windows-v0.2-1/third-person-preview.png)
 
 ## Source and verification
 

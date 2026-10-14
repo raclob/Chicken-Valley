@@ -3,6 +3,7 @@ name: Windows PC prototype
 on:
   push:
     branches: [main]
+    paths: ['*.gd', '*.tscn', 'project.godot', 'export_presets.cfg', 'icon.svg', 'PLAY.txt']
   workflow_dispatch:
 
 permissions:
