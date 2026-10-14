@@ -6,7 +6,7 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot -Parent
 $projectPath = Join-Path $projectRoot 'ChickenValley.uproject'
 $buildScript = Join-Path $EngineRoot 'Engine/Build/BatchFiles/Build.bat'
-if (!(Test-Path $buildScript)) { throw 'EngineRoot must point to the installed UE_5.6 directory.' }
+if (!(Test-Path $buildScript)) { throw 'EngineRoot must point to the installed UE_5.8 directory.' }
 if ($Package -and !(Test-Path (Join-Path $projectRoot 'Content/Maps/FarmValley.umap'))) {
     throw 'Open the editor and run Tools/Bootstrap.py before packaging. See Unreal/README.md.'
 }

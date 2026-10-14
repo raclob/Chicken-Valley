@@ -1,12 +1,12 @@
 # Chicken Valley — Unreal Engine migration
 
-New development targets **Unreal Engine 5.6 on Windows**. The [Unreal project and setup guide](Unreal/README.md) are in `Unreal/`.
+New development targets **Unreal Engine 5.8 on Windows**. The [Unreal project and setup guide](Unreal/README.md) are in `Unreal/`.
 
 The migration source includes the third-person farmer, farm economy, coops, fences, an AI rival, and direct chicken stealing: walk into the rival field, press E, and carry the birds home.
 
 **Status:** portable C++ gameplay tests pass. Unreal compilation, editor asset generation, interactive play, and Windows packaging have not been verified because Unreal is not installed in the development environment. There is no packaged Unreal executable yet.
 
-Start by [installing Unreal Engine through Epic](https://www.unrealengine.com/en-US/download) and Visual Studio 2022's **Game development with C++** workload, then follow the [Windows setup instructions](Unreal/README.md). Download the source using **Code → Download ZIP**; extract it and open `Unreal/ChickenValley.uproject`.
+Start by [installing Unreal Engine through Epic](https://www.unrealengine.com/en-US/download) and its supported Visual Studio toolchain with the **Game development with C++** workload, then follow the [Windows setup instructions](Unreal/README.md). Download the source using **Code → Download ZIP**; extract it and open `Unreal/ChickenValley.uproject`.
 
 The existing Windows release below remains the earlier **Godot** prototype.
 

@@ -1,13 +1,13 @@
 # Chicken Valley — Unreal migration source
 
-An Unreal Engine **5.6 C++ project** for Windows, porting the farm rivalry prototype. Source is implemented; **it has not been compiled or played in Unreal yet** because the development workspace has no Unreal installation. There is no new Unreal executable in the releases. The existing Windows executable uses Godot.
+An Unreal Engine **5.8 C++ project** for Windows, porting the farm rivalry prototype. Source is implemented; **it has not been compiled or played in Unreal yet** because the development workspace has no Unreal installation. There is no new Unreal executable in the releases. The existing Windows executable uses Godot.
 
 The source includes a third-person farmer, a collision-aware follow camera, movement and jump, runtime-generated farms, coops, fences, chickens, income, upgrades, an AI rival, visible enemy raids, a HUD, pause/restart, and direct chicken theft. Walk into the rival chicken field, press E, then return to your farm to bank the carried birds. Art and walking animation use simple engine primitives as placeholders.
 
 ## Install the tools on Windows
 
-1. Install the **Epic Games Launcher**, then install **Unreal Engine 5.6** from its Unreal Engine Library. Keep the Win64 platform tools enabled.
-2. Install **Visual Studio 2022** with **Game development with C++**, the MSVC v143 compiler, a Windows SDK, and Visual Studio Tools for Unreal Engine. Use the versions recommended by Unreal 5.6's installer/documentation.
+1. Install the **Epic Games Launcher**, then install **Unreal Engine 5.8** from its Unreal Engine Library. Keep the Win64 platform tools enabled.
+2. Install the **Visual Studio version and MSVC toolchain supported by Unreal 5.8**, with **Game development with C++**, a Windows SDK, and Visual Studio Tools for Unreal Engine. Use Unreal 5.8's installer/documentation to select the required versions.
 3. Download this repository using **Code → Download ZIP**, extract it, and open the **Unreal** folder.
 
 Unreal is a large installation. The Epic launcher will show the space required for your selected engine components. An engine license/account is needed to install Unreal; no credentials belong in this repository.
@@ -19,7 +19,7 @@ Right-click **ChickenValley.uproject**, choose **Generate Visual Studio project 
 Alternatively, in PowerShell from the Unreal folder:
 
 ```powershell
-& .\Tools\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6'
+& .\Tools\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8'
 ```
 
 The editor may initially report that `/Game/Maps/FarmValley` is missing. That map and the prototype material are generated in the next step; no binary `.uasset` or `.umap` files have been fabricated or included.
@@ -50,7 +50,7 @@ Chickens earn 0.65 coins per second. Coops provide 12 spaces each. Fences block 
 After generating the assets and successfully playing in the editor, run:
 
 ```powershell
-& .\Tools\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.6' -Package
+& .\Tools\Build-Windows.ps1 -EngineRoot 'C:\Program Files\Epic Games\UE_5.8' -Package
 ```
 
 The packaged folder appears under **Unreal/Builds/Windows**. Distribute the entire packaged folder, not just its executable. Engine compilation, editor asset generation, camera/input/rendering, and packaging still need to be verified on a machine with Unreal installed.
